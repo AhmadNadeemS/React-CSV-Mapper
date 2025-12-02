@@ -106,8 +106,8 @@ export const MappingStep: React.FC<MappingStepProps> = ({
                 }
               >
                 <option value="">Select a column</option>
-                {headers.map((header, index) => (
-                  <option key={index} value={index}>
+                {(headers || []).map((header, index) => (
+                  <option key={`${field.key}-${index}`} value={index}>
                     {header}
                   </option>
                 ))}

@@ -60,9 +60,9 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
     if (step === 2) {
       // Process headers
       const selectedHeaders = rawRows[headerRowIndex];
-      setHeaders(selectedHeaders);
+      setHeaders(selectedHeaders || []);
       // Auto-map
-      const newMapping = validator.autoMap(selectedHeaders);
+      const newMapping = validator.autoMap(selectedHeaders || []);
       setMapping(newMapping);
       setStep(3);
     } else if (step === 3) {
