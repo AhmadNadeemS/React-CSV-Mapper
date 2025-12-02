@@ -1,4 +1,4 @@
-# React CSV Column Mapper
+# CSV Column Mapper
 
 [![npm version](https://img.shields.io/npm/v/react-csv-mapper.svg)](https://www.npmjs.com/package/react-csv-mapper)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)

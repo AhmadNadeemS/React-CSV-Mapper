@@ -19,10 +19,27 @@ export const MappingStep: React.FC<MappingStepProps> = ({
   onToggleField,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<'bottom' | 'top'>('bottom');
   const menuRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const activeKeys = new Set(templateFields.map((f) => f.key));
+
+  const toggleMenu = () => {
+    if (!isMenuOpen && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      // Simple check: if space below is tight (< 300px) AND more space above, open top
+      if ((spaceBelow < 300 && spaceAbove > spaceBelow) || spaceBelow < 150) {
+        setMenuPosition('top');
+      } else {
+        setMenuPosition('bottom');
+      }
+    }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,13 +67,13 @@ export const MappingStep: React.FC<MappingStepProps> = ({
             ref={btnRef}
             className="csv-btn csv-btn-secondary"
             id="csv-field-selector-btn"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={toggleMenu}
           >
             + Add/Remove Fields
           </button>
           <div
             ref={menuRef}
-            className={`csv-field-selector-menu ${isMenuOpen ? '' : 'hidden'}`}
+            className={`csv-field-selector-menu ${isMenuOpen ? '' : 'hidden'} ${menuPosition === 'top' ? 'top' : ''}`}
             id="csv-field-selector-menu"
           >
             <div style={{ padding: '8px', borderBottom: '1px solid #eee', fontWeight: 600 }}>

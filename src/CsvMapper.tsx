@@ -47,6 +47,7 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
   const [mapping, setMapping] = useState<Record<string, number>>({});
   const [validationResults, setValidationResults] = useState<ValidationResult[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const parser = useMemo(() => new CsvParser(), []);
   const validator = useMemo(() => new Validator(columns), [columns]);
@@ -65,7 +66,9 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
     }
   }, [isOpen, activeColumns]);
 
+
   const handleFileSelected = async (file: File) => {
+    setIsLoading(true);
     try {
       const rows = await parser.parse(file);
       setRawRows(rows);
@@ -74,7 +77,25 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
       setError(null);
     } catch (err) {
       console.error('Parse error', err);
-      setError('Error parsing file');
+      setError('Error parsing file. Please check the file format and try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDataPasted = async (data: string, delimiter: string = ',') => {
+    setIsLoading(true);
+    try {
+      const rows = await parser.parse(data, { delimiter });
+      setRawRows(rows);
+      setStep(2);
+      setHeaderRowIndex(0);
+      setError(null);
+    } catch (err) {
+      console.error('Parse error', err);
+      setError('Error parsing pasted data. Please check the format and try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -217,7 +238,7 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <UploadStep onFileSelected={handleFileSelected} />;
+        return <UploadStep onFileSelected={handleFileSelected} onDataPasted={handleDataPasted} isLoading={isLoading} />;
       case 2:
         return (
           <HeaderSelectionStep
