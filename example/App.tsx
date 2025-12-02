@@ -4,12 +4,13 @@ import { CsvMapper, CsvColumn } from '../src';
 export default function App() {
   // Define all available fields
   const allFields: CsvColumn[] = [
-    { key: 'firstName', label: 'First Name', required: true },
-    { key: 'lastName', label: 'Last Name', required: true },
+    { key: 'firstName', label: 'First Name', required: true, default: true },
+    { key: 'lastName', label: 'Last Name', required: true, default: true },
     {
       key: 'email',
       label: 'Email Address',
       required: true,
+      default: true,
       validate: (value) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(value) ? true : 'Invalid email format';
@@ -20,12 +21,9 @@ export default function App() {
     { key: 'salary', label: 'Salary' }
   ];
 
-  // Default active columns (First Name, Last Name, Email)
-  const defaultColumns = allFields.slice(0, 3);
-
   const handleSubmit = (data: Record<string, string>[]) => {
-    console.log('Imported data:', data);
-    alert(`Successfully imported ${data.length} records! Check console for details.`);
+    // Handle the imported data here
+    // e.g. send to API, update state, etc.
   };
 
   return (
@@ -50,8 +48,7 @@ export default function App() {
         </p>
 
         <CsvMapper
-          columns={defaultColumns}
-          availableFields={allFields}
+          columns={allFields}
           onSubmit={handleSubmit}
           trigger={
             <button

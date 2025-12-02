@@ -12,13 +12,35 @@ import './styles.css';
 export const CsvMapper: React.FC<CsvMapperProps> = ({
   columns: initialColumns,
   onSubmit,
-  availableFields = [],
+  availableFields: propAvailableFields,
   trigger,
   container = 'body',
 }) => {
+  // Determine active columns and available fields
+  const { activeColumns, allAvailableFields } = useMemo(() => {
+    // If availableFields prop is provided, use legacy behavior
+    if (propAvailableFields) {
+      return {
+        activeColumns: initialColumns,
+        allAvailableFields: propAvailableFields
+      };
+    }
+
+    // New behavior: Filter default columns
+    const defaults = initialColumns.filter(c => c.default);
+    // If no defaults specified, use all columns (legacy behavior for single array)
+    const active = defaults.length > 0 ? defaults : initialColumns;
+
+    return {
+      activeColumns: active,
+      allAvailableFields: initialColumns
+    };
+  }, [initialColumns, propAvailableFields]);
+
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
-  const [columns, setColumns] = useState<CsvColumn[]>(initialColumns);
+  const [columns, setColumns] = useState<CsvColumn[]>(activeColumns);
+  const [availableFields] = useState<CsvColumn[]>(allAvailableFields);
   const [rawRows, setRawRows] = useState<string[][]>([]);
   const [headerRowIndex, setHeaderRowIndex] = useState(0);
   const [headers, setHeaders] = useState<string[]>([]);
@@ -39,9 +61,9 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
       setMapping({});
       setValidationResults([]);
       setError(null);
-      setColumns(initialColumns);
+      setColumns(activeColumns);
     }
-  }, [isOpen, initialColumns]);
+  }, [isOpen, activeColumns]);
 
   const handleFileSelected = async (file: File) => {
     try {

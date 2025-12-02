@@ -10,6 +10,8 @@ export interface CsvColumn {
   required?: boolean;
   /** Custom validation function */
   validate?: (value: string) => true | string;
+  /** Whether the column should be selected by default */
+  default?: boolean;
 }
 
 /**
