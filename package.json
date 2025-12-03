@@ -15,9 +15,7 @@
   "files": [
     "dist/",
     "README.md",
-    "LICENSE",
-    "demo.gif",
-    "demo-1.gif"
+    "LICENSE"
   ],
   "scripts": {
     "build": "rollup -c",
