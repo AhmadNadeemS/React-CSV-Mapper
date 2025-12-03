@@ -150,7 +150,6 @@ The theme automatically applies to:
 | `theme` | `ThemeColor \| string` | ❌ No | Theme color (named or hex) |
 | `trigger` | `React.ReactElement` | ❌ No | Custom trigger button |
 | `container` | `string` | ❌ No | Container selector (default: 'body') |
-| `availableFields` | `CsvColumn[]` | ❌ No | Pool of fields for dynamic selection |
 
 ### Column Definition
 
