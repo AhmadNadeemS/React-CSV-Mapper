@@ -1,6 +1,6 @@
 {
   "name": "react-csv-mapper",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A flexible React component for mapping CSV columns to predefined fields with validation",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
