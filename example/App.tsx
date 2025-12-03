@@ -49,7 +49,7 @@ export default function App() {
         <CsvMapper
           columns={allFields}
           onSubmit={handleSubmit}
-          theme="blue"
+          theme="indigo"
           trigger={
             <button
               style={{

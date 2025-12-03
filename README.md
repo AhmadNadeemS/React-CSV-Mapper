@@ -24,13 +24,12 @@ A powerful, production-ready React CSV import component with intelligent column 
 - **Streaming Parser** - Memory-efficient chunk-based parsing
 - **Real-time Progress** - Live progress updates with row count and percentage
 - **Cancellable Operations** - Abort long-running imports at any time
-- **Pagination** - Built-in pagination for header selection and validation steps
 
 ### 🎨 Theming & Customization
 - **18 Built-in Themes** - Choose from blue, indigo, purple, pink, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, slate, gray, zinc, neutral, stone
 - **Custom Themes** - Pass any hex color for instant theming
+- **TypeScript Autocomplete** - Full type support for theme names
 - **Custom Trigger** - Use your own button or component to trigger the mapper
-- **No Focus Rings** - Clean, modern UI without distracting outlines
 
 ### 📊 Data Handling
 - **Smart Auto-mapping** - Automatically matches CSV columns to your fields
