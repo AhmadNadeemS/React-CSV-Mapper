@@ -37,17 +37,35 @@ type WorkerMessage = ParseMessage | CancelMessage;
 type WorkerResponse = ProgressMessage | ResultMessage | ErrorMessage;
 
 let cancelled = false;
+// State to handle rows spanning across chunks
+let incompleteRow: string[] = [];
+let incompleteField = '';
+let insideQuoteAcrossChunks = false;
+let totalRowsParsed = 0;
 
 self.onmessage = (e: MessageEvent<WorkerMessage>) => {
   const message = e.data;
 
   if (message.type === 'cancel') {
     cancelled = true;
+    // Reset state
+    incompleteRow = [];
+    incompleteField = '';
+    insideQuoteAcrossChunks = false;
+    totalRowsParsed = 0;
     return;
   }
 
   if (message.type === 'parse') {
-    cancelled = false;
+    // Reset state for new parsing session
+    if (message.chunkIndex === 0) {
+      cancelled = false;
+      incompleteRow = [];
+      incompleteField = '';
+      insideQuoteAcrossChunks = false;
+      totalRowsParsed = 0;
+    }
+
     try {
       const rows = parseCSVChunk(
         message.text,
@@ -86,9 +104,9 @@ function parseCSVChunk(
   totalChunks: number
 ): string[][] {
   const rows: string[][] = [];
-  let currentRow: string[] = [];
-  let currentField = '';
-  let insideQuote = false;
+  let currentRow: string[] = incompleteRow.length > 0 ? [...incompleteRow] : [];
+  let currentField = incompleteField;
+  let insideQuote = insideQuoteAcrossChunks;
 
   // Normalize line endings
   text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
@@ -110,7 +128,7 @@ function parseCSVChunk(
       const response: ProgressMessage = {
         type: 'progress',
         percent,
-        rowsParsed: rows.length,
+        rowsParsed: totalRowsParsed + rows.length,
         chunkIndex
       };
       self.postMessage(response);
@@ -140,15 +158,29 @@ function parseCSVChunk(
     }
   }
 
-  // Push last field/row if exists
-  if (currentField || currentRow.length > 0) {
-    currentRow.push(currentField);
-    rows.push(currentRow);
-  }
+  // Update state for next chunk
+  incompleteRow = currentRow;
+  incompleteField = currentField;
+  insideQuoteAcrossChunks = insideQuote;
+  totalRowsParsed += rows.length;
 
-  // Remove empty last row if it exists
-  if (rows.length > 0 && rows[rows.length - 1].length === 1 && rows[rows.length - 1][0] === '') {
-    rows.pop();
+  // If this is the last chunk, push any remaining data
+  if (chunkIndex === totalChunks - 1) {
+    if (currentField || currentRow.length > 0) {
+      currentRow.push(currentField);
+      rows.push(currentRow);
+    }
+
+    // Remove empty last row if it exists
+    if (rows.length > 0 && rows[rows.length - 1].length === 1 && rows[rows.length - 1][0] === '') {
+      rows.pop();
+    }
+
+    // Reset state after final chunk
+    incompleteRow = [];
+    incompleteField = '';
+    insideQuoteAcrossChunks = false;
+    totalRowsParsed = 0;
   }
 
   return rows;
