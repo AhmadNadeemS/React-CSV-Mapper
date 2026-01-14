@@ -140,16 +140,17 @@ The theme automatically applies to:
 
 ### 🌙 Dark Mode Support
 
-The component comes with built-in dark mode support. You can control it in two ways:
+The component comes with built-in dark mode support. You can control it in three ways:
 
-1. **System Preference**: By default, it automatically respects the user's system preference (`prefers-color-scheme: dark`).
-2. **Manual Control**: Use the `isDark` prop to force a specific theme.
+1. **Auto-Theme Detection**: By default, it automatically detects if your website is in dark mode by checking for a `.dark` class or `data-theme="dark"` attribute on your `<body>` or `<html>` tags. This works seamlessly with Tailwind CSS and other modern frameworks.
+2. **System Preference**: It also respects the user's system preference (`prefers-color-scheme: dark`) if no override is found.
+3. **Manual Control**: Use the `isDark` prop to force a specific theme regardless of the site or system settings.
 
 ```tsx
 <CsvMapper
   columns={columns}
   onSubmit={handleSubmit}
-  isDark={true} // Force dark mode
+  isDark={true} // Force dark mode even in a light theme environment
   theme="indigo"
 />
 ```
@@ -160,14 +161,14 @@ When in dark mode, you can still use the `theme` prop to control the primary acc
 
 ### `<CsvMapper />` Component
 
-| Prop        | Type                                       | Required | Description                             |
-| ----------- | ------------------------------------------ | -------- | --------------------------------------- |
-| `columns`   | `CsvColumn[]`                              | ✅ Yes    | Array of column definitions             |
-| `onSubmit`  | `(data: Record<string, string>[]) => void` | ✅ Yes    | Callback when data is submitted         |
-| `theme`     | `ThemeColor \| string`                     | ❌ No     | Theme color (named or hex)              |
-| `trigger`   | `React.ReactElement`                       | ❌ No     | Custom trigger button                   |
-| `container` | `string`                                   | ❌ No     | Container selector (default: 'body')    |
-| `isDark`    | `boolean`                                  | ❌ No     | Enable dark mode (default: system pref) |
+| Prop        | Type                                       | Required | Description                                                 |
+| ----------- | ------------------------------------------ | -------- | ----------------------------------------------------------- |
+| `columns`   | `CsvColumn[]`                              | ✅ Yes    | Array of column definitions                                 |
+| `onSubmit`  | `(data: Record<string, string>[]) => void` | ✅ Yes    | Callback when data is submitted                             |
+| `theme`     | `ThemeColor \| string`                     | ❌ No     | Theme color (named or hex)                                  |
+| `trigger`   | `React.ReactElement`                       | ❌ No     | Custom trigger button                                       |
+| `container` | `string`                                   | ❌ No     | Container selector (default: 'body')                        |
+| `isDark`    | `boolean`                                  | ❌ No     | Enable dark mode (Auto-detects site/system if not provided) |
 
 ### Column Definition
 

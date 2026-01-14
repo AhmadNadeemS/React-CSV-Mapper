@@ -19,20 +19,32 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
   theme,
   isDark: propIsDark,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [systemDark, setSystemDark] = useState(false);
+  const [parentDark, setParentDark] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.matchMedia) {
       const mq = window.matchMedia('(prefers-color-scheme: dark)');
       setSystemDark(mq.matches);
-
       const listener = (e: MediaQueryListEvent) => setSystemDark(e.matches);
       mq.addEventListener('change', listener);
       return () => mq.removeEventListener('change', listener);
     }
   }, []);
 
-  const isDark = propIsDark !== undefined ? propIsDark : systemDark;
+  useEffect(() => {
+    if (typeof window !== 'undefined' && isOpen) {
+      const isParentDark =
+        document.body.classList.contains('dark') ||
+        document.documentElement.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark' ||
+        document.documentElement.getAttribute('data-theme') === 'dark';
+      setParentDark(isParentDark);
+    }
+  }, [isOpen]);
+
+  const isDark = propIsDark !== undefined ? propIsDark : (parentDark || systemDark);
 
   // Determine active columns and available fields
   const { activeColumns, allAvailableFields } = useMemo(() => {
@@ -55,7 +67,6 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
     };
   }, [initialColumns, propAvailableFields]);
 
-  const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [columns, setColumns] = useState<CsvColumn[]>(activeColumns);
   const [availableFields] = useState<CsvColumn[]>(allAvailableFields);

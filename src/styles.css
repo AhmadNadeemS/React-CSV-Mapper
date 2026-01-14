@@ -876,11 +876,13 @@ html, body {
 .csv-mapping-header-row {
     background: var(--csv-bg-header);
     font-weight: 600;
-    padding: 12px 16px;
-    border-radius: 0; /* Let container handle it */
+    padding: 10px 16px;
     border-bottom: 1px solid var(--csv-border);
-    margin-bottom: 0;
     color: var(--csv-text-primary);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
 }
 
 input::-webkit-outer-spin-button,
