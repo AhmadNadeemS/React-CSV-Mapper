@@ -17,7 +17,23 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
   trigger,
   container = 'body',
   theme,
+  isDark: propIsDark,
 }) => {
+  const [systemDark, setSystemDark] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      setSystemDark(mq.matches);
+
+      const listener = (e: MediaQueryListEvent) => setSystemDark(e.matches);
+      mq.addEventListener('change', listener);
+      return () => mq.removeEventListener('change', listener);
+    }
+  }, []);
+
+  const isDark = propIsDark !== undefined ? propIsDark : systemDark;
+
   // Determine active columns and available fields
   const { activeColumns, allAvailableFields } = useMemo(() => {
     // If availableFields prop is provided, use legacy behavior
@@ -321,7 +337,7 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
     } as React.CSSProperties : {};
 
     const modalContent = (
-      <div className="csv-mapper-overlay" style={themeStyle}>
+      <div className={`csv-mapper-overlay ${isDark ? 'csv-dark-mode' : ''}`} style={themeStyle}>
         <div className="csv-mapper-modal">
           <div className="csv-mapper-header">
             <h2 id="csv-step-title">

@@ -41,15 +41,17 @@ export const HeaderSelectionStep: React.FC<HeaderSelectionStepProps> = ({
               return (
                 <tr key={absoluteIndex} className={absoluteIndex === selectedRowIndex ? 'csv-header-row' : ''}>
                   <td className="csv-row-select">
-                    <input
-                      type="radio"
-                      name="header-row"
-                      value={absoluteIndex}
-                      checked={absoluteIndex === selectedRowIndex}
-                      onChange={() => onRowSelected(absoluteIndex)}
-                    />
+                    <div>
+                      <input
+                        type="radio"
+                        name="header-row"
+                        value={absoluteIndex}
+                        checked={absoluteIndex === selectedRowIndex}
+                        onChange={() => onRowSelected(absoluteIndex)}
+                      />
+                    </div>
                   </td>
-                  <td className="csv-row-index">{absoluteIndex + 1}</td>
+                  <td className="csv-row-index" data-index={absoluteIndex + 1}></td>
                   {row.map((cell, cellIndex) => (
                     <td key={cellIndex}>{cell}</td>
                   ))}
@@ -61,23 +63,21 @@ export const HeaderSelectionStep: React.FC<HeaderSelectionStepProps> = ({
       </div>
 
       {totalPages > 1 && (
-        <div className="csv-pagination" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '16px' }}>
+        <div className="csv-simple-pagination">
           <button
-            className="csv-btn csv-btn-secondary"
+            className="csv-btn csv-btn-secondary csv-pagination-nav-btn"
             onClick={handlePrevPage}
             disabled={currentPage === 1}
-            style={{ padding: '4px 12px', fontSize: '14px' }}
           >
             Previous
           </button>
-          <span style={{ fontSize: '14px', color: '#666' }}>
+          <span className="csv-simple-pagination-text">
             Page {currentPage} of {totalPages}
           </span>
           <button
-            className="csv-btn csv-btn-secondary"
+            className="csv-btn csv-btn-secondary csv-pagination-nav-btn"
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
-            style={{ padding: '4px 12px', fontSize: '14px' }}
           >
             Next
           </button>

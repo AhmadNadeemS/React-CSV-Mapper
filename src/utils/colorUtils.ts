@@ -119,6 +119,25 @@ const COLOR_PALETTES: Record<string, { primary: string; primaryHover: string; pr
 };
 
 /**
+ * Utility to convert hex to RGBA
+ */
+export function hexToRgba(hex: string, alpha: number): string {
+  // Remove # if present
+  hex = hex.replace('#', '');
+
+  // Handle shorthand hex (e.g. #f00)
+  if (hex.length === 3) {
+    hex = hex.split('').map(char => char + char).join('');
+  }
+
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+/**
  * Utility to adjust color brightness
  * @param hex - Hex color code (e.g., '#6366f1')
  * @param percent - Percentage to lighten (positive) or darken (negative)
@@ -154,15 +173,14 @@ export function adjustColor(hex: string, percent: number): string {
 export function generateThemeColors(colorOrName: string) {
   // Check if it's a named color
   const normalizedName = colorOrName.toLowerCase();
-  if (COLOR_PALETTES[normalizedName]) {
-    return COLOR_PALETTES[normalizedName];
-  }
+  const palette = COLOR_PALETTES[normalizedName];
 
-  // Otherwise, treat as hex and generate shades
+  const primary = palette ? palette.primary : colorOrName;
+
   return {
-    primary: colorOrName,
-    primaryHover: adjustColor(colorOrName, -10),
-    primaryLight: adjustColor(colorOrName, 85),
-    primaryDark: adjustColor(colorOrName, -20),
+    primary,
+    primaryHover: palette ? palette.primaryHover : adjustColor(primary, -10),
+    primaryLight: hexToRgba(primary, 0.1), // Use 10% opacity for primaryLight
+    primaryDark: palette ? palette.primaryDark : adjustColor(primary, -20),
   };
 }

@@ -138,17 +138,36 @@ The theme automatically applies to:
 - Borders on focus
 - Active pagination buttons
 
+### 🌙 Dark Mode Support
+
+The component comes with built-in dark mode support. You can control it in two ways:
+
+1. **System Preference**: By default, it automatically respects the user's system preference (`prefers-color-scheme: dark`).
+2. **Manual Control**: Use the `isDark` prop to force a specific theme.
+
+```tsx
+<CsvMapper
+  columns={columns}
+  onSubmit={handleSubmit}
+  isDark={true} // Force dark mode
+  theme="indigo"
+/>
+```
+
+When in dark mode, you can still use the `theme` prop to control the primary accent color.
+
 ## 📖 API Reference
 
 ### `<CsvMapper />` Component
 
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `columns` | `CsvColumn[]` | ✅ Yes | Array of column definitions |
-| `onSubmit` | `(data: Record<string, string>[]) => void` | ✅ Yes | Callback when data is submitted |
-| `theme` | `ThemeColor \| string` | ❌ No | Theme color (named or hex) |
-| `trigger` | `React.ReactElement` | ❌ No | Custom trigger button |
-| `container` | `string` | ❌ No | Container selector (default: 'body') |
+| Prop        | Type                                       | Required | Description                             |
+| ----------- | ------------------------------------------ | -------- | --------------------------------------- |
+| `columns`   | `CsvColumn[]`                              | ✅ Yes    | Array of column definitions             |
+| `onSubmit`  | `(data: Record<string, string>[]) => void` | ✅ Yes    | Callback when data is submitted         |
+| `theme`     | `ThemeColor \| string`                     | ❌ No     | Theme color (named or hex)              |
+| `trigger`   | `React.ReactElement`                       | ❌ No     | Custom trigger button                   |
+| `container` | `string`                                   | ❌ No     | Container selector (default: 'body')    |
+| `isDark`    | `boolean`                                  | ❌ No     | Enable dark mode (default: system pref) |
 
 ### Column Definition
 

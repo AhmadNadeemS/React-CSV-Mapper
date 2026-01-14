@@ -46,6 +46,8 @@ export interface CsvMapperProps extends CsvMapperOptions {
   container?: string;
   /** Primary theme color - named color or hex code */
   theme?: ThemeColor | string;
+  /** Enable dark mode */
+  isDark?: boolean;
 }
 
 /**

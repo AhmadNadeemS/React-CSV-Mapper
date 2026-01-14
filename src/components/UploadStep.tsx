@@ -47,8 +47,8 @@ export const UploadStep: React.FC<UploadStepProps> = ({ onFileSelected, onDataPa
 
   if (viewMode === 'paste') {
     return (
-      <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-        <p style={{ margin: '0 0 16px 0', fontSize: '14px', color: '#666', lineHeight: '1.5' }}>
+      <div className="csv-upload-wrapper">
+        <p className="csv-paste-intro">
           Copy existing table data from a spreadsheet (like an Excel workbook or Google Sheet) and paste it in the field below.
         </p>
         <textarea
@@ -58,9 +58,9 @@ export const UploadStep: React.FC<UploadStepProps> = ({ onFileSelected, onDataPa
           onChange={(e) => setPasteData(e.target.value)}
           autoFocus
         />
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <label style={{ fontSize: '14px', color: '#666' }}>Select Delimiter</label>
+        <div className="csv-paste-controls">
+          <div className="csv-delimiter-wrapper">
+            <label>Select Delimiter</label>
             <select
               className="csv-delimiter-select"
               value={delimiter}
@@ -73,7 +73,7 @@ export const UploadStep: React.FC<UploadStepProps> = ({ onFileSelected, onDataPa
               <option value=" ">Space</option>
             </select>
           </div>
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="csv-button-wrapper">
             <button
               className="csv-btn csv-btn-secondary"
               onClick={() => {
@@ -97,28 +97,14 @@ export const UploadStep: React.FC<UploadStepProps> = ({ onFileSelected, onDataPa
   }
 
   return (
-    <div style={{
-      maxWidth: '700px',
-      margin: '0 auto',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '300px'
-    }}>
+    <div className="csv-upload-step-container">
       <div
-        className={`csv-upload-area ${isDragOver ? 'dragover' : ''}`}
+        className={`csv-upload-area ${isDragOver ? 'dragover' : ''} ${isLoading ? 'loading' : ''}`}
         id="csv-drop-zone"
         onClick={() => !isLoading && fileInputRef.current?.click()}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        style={{
-          opacity: isLoading ? 0.6 : 1,
-          pointerEvents: isLoading ? 'none' : 'auto',
-          width: '100%',
-          position: 'relative'
-        }}
       >
         <div className="csv-upload-text">Drop files here or click to upload</div>
         <div className="csv-upload-subtext">XLS, XLSX, CSV files are accepted</div>
@@ -138,16 +124,15 @@ export const UploadStep: React.FC<UploadStepProps> = ({ onFileSelected, onDataPa
             <div className="csv-loading-text">Processing your file...</div>
             {progress && progress.percent > 0 && (
               <>
-                <div className="csv-progress-bar" style={{ marginTop: '16px', width: '80%', maxWidth: '300px' }}>
+                <div className="csv-progress-wrapper">
                   <div
-                    className="csv-progress-fill csv-progress-fill-bar"
+                    className="csv-progress-fill"
                     style={{
-                      width: `${progress.percent}%`,
-                      height: '8px'
+                      width: `${progress.percent}%`
                     }}
                   ></div>
                 </div>
-                <div className="csv-loading-subtext" style={{ marginTop: '8px' }}>
+                <div className="csv-loading-subtext">
                   {progress.percent}% • {progress.rowsParsed.toLocaleString()} rows
                 </div>
               </>
@@ -159,11 +144,10 @@ export const UploadStep: React.FC<UploadStepProps> = ({ onFileSelected, onDataPa
         )}
       </div>
 
-      <div style={{ marginTop: '16px', textAlign: 'center' }}>
+      <div className="csv-paste-data-link-container">
         <a
           href="#"
           className="csv-paste-data-link"
-          style={{textDecoration: 'none'}}
           onClick={(e) => {
             e.preventDefault();
             if (!isLoading) setViewMode('paste');

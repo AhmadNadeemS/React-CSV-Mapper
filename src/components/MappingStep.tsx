@@ -61,7 +61,7 @@ export const MappingStep: React.FC<MappingStepProps> = ({
 
   return (
     <div>
-      <div style={{ marginBottom: '16px' }}>
+      <div className="csv-field-selector-container">
         <div className="csv-field-selector-dropdown">
           <button
             ref={btnRef}
@@ -76,7 +76,7 @@ export const MappingStep: React.FC<MappingStepProps> = ({
             className={`csv-field-selector-menu ${isMenuOpen ? '' : 'hidden'} ${menuPosition === 'top' ? 'top' : ''}`}
             id="csv-field-selector-menu"
           >
-            <div style={{ padding: '8px', borderBottom: '1px solid #eee', fontWeight: 600 }}>
+            <div className="csv-field-selector-header">
               Select Fields
             </div>
             {availableFields.map((field) => (
@@ -95,42 +95,43 @@ export const MappingStep: React.FC<MappingStepProps> = ({
           </div>
         </div>
       </div>
-      <div
-        className="csv-mapping-row"
-        style={{ background: '#f5f5f5', fontWeight: 600, padding: '12px' }}
-      >
-        <div className="csv-mapping-label">Template Fields</div>
-        <div className="csv-mapping-select">Columns in your File</div>
-      </div>
-      <div id="csv-mapping-rows">
-        {templateFields.map((field, idx) => (
-          <div key={field.key} className="csv-mapping-row" data-field-index={idx}>
-            <div className="csv-mapping-label">
-              {field.label}
-              {field.required ? <span className="csv-required-star">*</span> : ''}
+      <div className="csv-mapping-container">
+        <div
+          className="csv-mapping-row csv-mapping-header-row"
+        >
+          <div className="csv-mapping-label">Template Fields</div>
+          <div className="csv-mapping-select">Columns in your File</div>
+        </div>
+        <div id="csv-mapping-rows">
+          {templateFields.map((field, idx) => (
+            <div key={field.key} className="csv-mapping-row" data-field-index={idx}>
+              <div className="csv-mapping-label">
+                {field.label}
+                {field.required ? <span className="csv-required-star">*</span> : ''}
+              </div>
+              <div className="csv-mapping-select">
+                <select
+                  className="csv-select"
+                  data-key={field.key}
+                  value={mapping[field.key] !== undefined ? mapping[field.key] : ''}
+                  onChange={(e) =>
+                    onMappingChange(
+                      field.key,
+                      e.target.value !== '' ? parseInt(e.target.value) : -1
+                    )
+                  }
+                >
+                  <option value="">Select a column</option>
+                  {(headers || []).map((header, index) => (
+                    <option key={`${field.key}-${index}`} value={index}>
+                      {header}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div className="csv-mapping-select">
-              <select
-                className="csv-select"
-                data-key={field.key}
-                value={mapping[field.key] !== undefined ? mapping[field.key] : ''}
-                onChange={(e) =>
-                  onMappingChange(
-                    field.key,
-                    e.target.value !== '' ? parseInt(e.target.value) : -1
-                  )
-                }
-              >
-                <option value="">Select a column</option>
-                {(headers || []).map((header, index) => (
-                  <option key={`${field.key}-${index}`} value={index}>
-                    {header}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

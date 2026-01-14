@@ -54,13 +54,7 @@ const PageInput: React.FC<PageInputProps> = ({ currentPage, totalPages, onPageCh
       onChange={(e) => setValue(e.target.value)}
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
-      style={{
-        width: '60px',
-        padding: '4px',
-        textAlign: 'center',
-        borderRadius: '4px',
-        border: '1px solid #ddd'
-      }}
+      className="csv-page-input"
     />
   );
 };
@@ -136,37 +130,27 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
 
   return (
     <div>
-      <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
+      <div className="csv-validation-header">
+        <div className="csv-validation-actions">
           <button className="csv-btn csv-btn-secondary" id="csv-export-json" onClick={onExportJson}>
             Export JSON
           </button>
-          <button className="csv-btn csv-btn-secondary" id="csv-export-csv" onClick={onExportCsv} style={{ marginLeft: '8px' }}>
+          <button className="csv-btn csv-btn-secondary" id="csv-export-csv" onClick={onExportCsv}>
             Export CSV
           </button>
         </div>
 
         {/* Error Summary and Filter Toggle */}
-        <div style={{ fontSize: '14px', color: '#666' }}>
+        <div className="csv-validation-summary">
           {invalidCount > 0 ? (
-            <span style={{ color: '#dc2626', fontWeight: 500 }}>
+            <span className="csv-error-count">
               Found {invalidCount} invalid row{invalidCount !== 1 ? 's' : ''}.
               <button
                 onClick={() => {
                   setShowErrorsOnly(!showErrorsOnly);
                   setCurrentPage(1); // Reset to first page when toggling
                 }}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#2563eb',
-                  textDecoration: 'underline',
-                  cursor: 'pointer',
-                  marginLeft: '8px',
-                  padding: 0,
-                  font: 'inherit',
-                  fontWeight: 600
-                }}
+                className="csv-toggle-errors-btn"
               >
                 {showErrorsOnly ? 'Show all rows' : 'Show only errors'}
               </button>
@@ -232,22 +216,15 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
       </div>
 
       {totalPages > 1 && (
-        <div className="csv-pagination" style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr auto 1fr',
-          alignItems: 'center',
-          marginTop: '16px',
-          padding: '0 8px',
-          gap: '16px'
-        }}>
+        <div className="csv-pagination-container">
 
           {/* Left: Rows Per Page */}
-          <div className="csv-rows-per-page" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#666' }}>
+          <div className="csv-rows-per-page-wrapper">
             <span>Rows per page:</span>
             <select
               value={rowsPerPage}
               onChange={(e) => handleRowsPerPageChange(Number(e.target.value))}
-              style={{ padding: '4px', borderRadius: '4px', border: '1px solid #ddd' }}
+              className="csv-rows-per-page-select"
             >
               <option value={10}>10</option>
               <option value={25}>25</option>
@@ -257,27 +234,25 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
           </div>
 
           {/* Center: Pagination Controls */}
-          <div className="csv-pagination-controls" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+          <div className="csv-pagination-controls-wrapper">
             <button
-              className="csv-btn csv-btn-secondary"
+              className="csv-btn csv-btn-secondary csv-pagination-nav-btn"
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
-              style={{ padding: '4px 8px', fontSize: '14px', minWidth: '32px' }}
               title="First Page"
             >
               &laquo;
             </button>
             <button
-              className="csv-btn csv-btn-secondary"
+              className="csv-btn csv-btn-secondary csv-pagination-nav-btn"
               onClick={() => setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
-              style={{ padding: '4px 8px', fontSize: '14px', minWidth: '32px' }}
               title="Previous Page"
             >
               &lsaquo;
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', color: '#666' }}>
+            <div className="csv-page-jumper">
               <span>Page</span>
               <PageInput
                 currentPage={currentPage}
@@ -288,19 +263,17 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
             </div>
 
             <button
-              className="csv-btn csv-btn-secondary"
+              className="csv-btn csv-btn-secondary csv-pagination-nav-btn"
               onClick={() => setCurrentPage(currentPage + 1)}
               disabled={currentPage === totalPages}
-              style={{ padding: '4px 8px', fontSize: '14px', minWidth: '32px' }}
               title="Next Page"
             >
               &rsaquo;
             </button>
             <button
-              className="csv-btn csv-btn-secondary"
+              className="csv-btn csv-btn-secondary csv-pagination-nav-btn"
               onClick={() => setCurrentPage(totalPages)}
               disabled={currentPage === totalPages}
-              style={{ padding: '4px 8px', fontSize: '14px', minWidth: '32px' }}
               title="Last Page"
             >
               &raquo;
@@ -308,7 +281,7 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
           </div>
 
           {/* Right: Info */}
-          <div className="csv-pagination-info" style={{ fontSize: '14px', color: '#666', textAlign: 'right', whiteSpace: 'nowrap' }}>
+          <div className="csv-pagination-info-text">
             {startIndex + 1}-{endIndex} of {totalRows} rows
           </div>
         </div>
