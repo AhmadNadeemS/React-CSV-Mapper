@@ -142,9 +142,9 @@ The theme automatically applies to:
 
 The component comes with built-in dark mode support. You can control it in three ways:
 
-1. **Auto-Theme Detection**: By default, it automatically detects if your website is in dark mode by checking for a `.dark` class or `data-theme="dark"` attribute on your `<body>` or `<html>` tags. This works seamlessly with Tailwind CSS and other modern frameworks.
-2. **System Preference**: It also respects the user's system preference (`prefers-color-scheme: dark`) if no override is found.
-3. **Manual Control**: Use the `isDark` prop to force a specific theme regardless of the site or system settings.
+1. **Host Theme Detection**: By default, it automatically detects if your website is in dark mode by checking for a `.dark` class or `data-theme="dark"` attribute. If it detects explicit "light" signals (like `data-theme="default"` or `data-theme="light"`), it strictly follows them.
+2. **Safety Fallback**: If no theme markers are found, it now defaults to **Light Mode** to maintain visual consistency with the majority of host websites, ignoring the system dark mode unless you explicitly enable it.
+3. **Manual Control**: Use the `isDark` prop to force a specific theme regardless of the site settings.
 
 ```tsx
 <CsvMapper

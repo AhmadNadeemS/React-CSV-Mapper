@@ -20,31 +20,35 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
   isDark: propIsDark,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [systemDark, setSystemDark] = useState(false);
-  const [parentDark, setParentDark] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      const mq = window.matchMedia('(prefers-color-scheme: dark)');
-      setSystemDark(mq.matches);
-      const listener = (e: MediaQueryListEvent) => setSystemDark(e.matches);
-      mq.addEventListener('change', listener);
-      return () => mq.removeEventListener('change', listener);
-    }
-  }, []);
+  const [parentTheme, setParentTheme] = useState<'dark' | 'light' | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && isOpen) {
-      const isParentDark =
-        document.body.classList.contains('dark') ||
-        document.documentElement.classList.contains('dark') ||
-        document.body.getAttribute('data-theme') === 'dark' ||
-        document.documentElement.getAttribute('data-theme') === 'dark';
-      setParentDark(isParentDark);
+      const html = document.documentElement;
+      const body = document.body;
+
+      const checkAttr = (attr: string) => (html.getAttribute(attr) || body.getAttribute(attr))?.toLowerCase();
+      const themeAttr = checkAttr('data-theme') || checkAttr('theme');
+
+      const darkMarkers = ['dark', 'night', 'black'];
+      const lightMarkers = ['light', 'default', 'white', 'day'];
+
+      const hasDarkClass = html.classList.contains('dark') || body.classList.contains('dark');
+      const hasLightClass = html.classList.contains('light') || body.classList.contains('light');
+
+      if ((themeAttr && darkMarkers.includes(themeAttr)) || hasDarkClass) {
+        setParentTheme('dark');
+      } else if ((themeAttr && lightMarkers.includes(themeAttr)) || hasLightClass) {
+        setParentTheme('light');
+      } else {
+        setParentTheme(null);
+      }
     }
   }, [isOpen]);
 
-  const isDark = propIsDark !== undefined ? propIsDark : (parentDark || systemDark);
+  const isDark = propIsDark !== undefined
+    ? propIsDark
+    : parentTheme === 'dark'; // Defaults to false (Light) if parent is light or silent
 
   // Determine active columns and available fields
   const { activeColumns, allAvailableFields } = useMemo(() => {
