@@ -313,7 +313,6 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
 
     // Generate theme colors if theme prop is provided
     const themeColors = theme ? generateThemeColors(theme) : null;
-    console.log('CsvMapper Theme Debug:', { theme, themeColors });
     const themeStyle = themeColors ? {
       '--csv-primary': themeColors.primary,
       '--csv-primary-hover': themeColors.primaryHover,
