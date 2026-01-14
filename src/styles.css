@@ -38,7 +38,11 @@ html, body {
     --csv-overlay-bg: rgba(17, 24, 39, 0.6);
 }
 
-.csv-dark-mode {
+.csv-dark-mode,
+html.dark .csv-mapper-overlay,
+body.dark .csv-mapper-overlay,
+html[data-theme='dark'] .csv-mapper-overlay,
+body[data-theme='dark'] .csv-mapper-overlay {
     /* Brand Colors */
     --csv-primary: #818cf8;
     --csv-primary-hover: #a5b4fc;
@@ -46,16 +50,16 @@ html, body {
     --csv-primary-text: #e0e7ff;
 
     /* Backgrounds */
-    --csv-bg-main: #111827;
-    --csv-bg-card: #1f2937;
-    --csv-bg-header: #2d3748;
-    --csv-bg-hover: #374151;
-    --csv-primary-light-solid: #2d3748; /* Solid versions of selection colors */
+    --csv-bg-main: #111827 !important;
+    --csv-bg-card: #1f2937 !important;
+    --csv-bg-header: #2d3748 !important;
+    --csv-bg-hover: #374151 !important;
+    --csv-primary-light-solid: #2d3748 !important; /* Solid versions of selection colors */
 
     /* Text */
-    --csv-text-primary: #f9fafb;
-    --csv-text-secondary: #d1d5db;
-    --csv-text-on-primary: #111827;
+    --csv-text-primary: #f9fafb !important;
+    --csv-text-secondary: #d1d5db !important;
+    --csv-text-on-primary: #111827 !important;
 
     /* Borders */
     --csv-border: rgba(255, 255, 255, 0.1);
@@ -94,7 +98,13 @@ html, body {
 
 .csv-dark-mode .csv-mapper-body::-webkit-scrollbar-track,
 .csv-dark-mode .csv-preview-table-container::-webkit-scrollbar-track,
-.csv-dark-mode .csv-field-selector-menu::-webkit-scrollbar-track {
+.csv-dark-mode .csv-field-selector-menu::-webkit-scrollbar-track,
+html.dark .csv-mapper-overlay .csv-mapper-body::-webkit-scrollbar-track,
+html.dark .csv-mapper-overlay .csv-preview-table-container::-webkit-scrollbar-track,
+html.dark .csv-mapper-overlay .csv-field-selector-menu::-webkit-scrollbar-track,
+html[data-theme='dark'] .csv-mapper-overlay .csv-mapper-body::-webkit-scrollbar-track,
+html[data-theme='dark'] .csv-mapper-overlay .csv-preview-table-container::-webkit-scrollbar-track,
+html[data-theme='dark'] .csv-mapper-overlay .csv-field-selector-menu::-webkit-scrollbar-track {
     background: transparent;
 }
 
@@ -109,7 +119,13 @@ html, body {
 
 .csv-dark-mode .csv-mapper-body::-webkit-scrollbar-thumb,
 .csv-dark-mode .csv-preview-table-container::-webkit-scrollbar-thumb,
-.csv-dark-mode .csv-field-selector-menu::-webkit-scrollbar-thumb {
+.csv-dark-mode .csv-field-selector-menu::-webkit-scrollbar-thumb,
+html.dark .csv-mapper-overlay .csv-mapper-body::-webkit-scrollbar-thumb,
+html.dark .csv-mapper-overlay .csv-preview-table-container::-webkit-scrollbar-thumb,
+html.dark .csv-mapper-overlay .csv-field-selector-menu::-webkit-scrollbar-thumb,
+html[data-theme='dark'] .csv-mapper-overlay .csv-mapper-body::-webkit-scrollbar-thumb,
+html[data-theme='dark'] .csv-mapper-overlay .csv-preview-table-container::-webkit-scrollbar-thumb,
+html[data-theme='dark'] .csv-mapper-overlay .csv-field-selector-menu::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     border: 3px solid transparent;
@@ -124,7 +140,13 @@ html, body {
 
 .csv-dark-mode .csv-mapper-body::-webkit-scrollbar-thumb:hover,
 .csv-dark-mode .csv-preview-table-container::-webkit-scrollbar-thumb:hover,
-.csv-dark-mode .csv-field-selector-menu::-webkit-scrollbar-thumb:hover {
+.csv-dark-mode .csv-field-selector-menu::-webkit-scrollbar-thumb:hover,
+html.dark .csv-mapper-overlay .csv-mapper-body::-webkit-scrollbar-thumb:hover,
+html.dark .csv-mapper-overlay .csv-preview-table-container::-webkit-scrollbar-thumb:hover,
+html.dark .csv-mapper-overlay .csv-field-selector-menu::-webkit-scrollbar-thumb:hover,
+html[data-theme='dark'] .csv-mapper-overlay .csv-mapper-body::-webkit-scrollbar-thumb:hover,
+html[data-theme='dark'] .csv-mapper-overlay .csv-preview-table-container::-webkit-scrollbar-thumb:hover,
+html[data-theme='dark'] .csv-mapper-overlay .csv-field-selector-menu::-webkit-scrollbar-thumb:hover {
     background: var(--csv-scrollbar-thumb-hover);
 }
 
@@ -322,12 +344,16 @@ html, body {
     color: var(--csv-primary);
 }
 
-.csv-dark-mode .csv-paste-data-link {
+.csv-dark-mode .csv-paste-data-link,
+html.dark .csv-mapper-overlay .csv-paste-data-link,
+html[data-theme='dark'] .csv-mapper-overlay .csv-paste-data-link {
     color: var(--csv-primary);
     opacity: 0.9;
 }
 
-.csv-dark-mode .csv-paste-data-link:hover {
+.csv-dark-mode .csv-paste-data-link:hover,
+html.dark .csv-mapper-overlay .csv-paste-data-link:hover,
+html[data-theme='dark'] .csv-mapper-overlay .csv-paste-data-link:hover {
     color: var(--csv-primary-hover);
     opacity: 1;
 }
@@ -471,7 +497,15 @@ html, body {
 .csv-dark-mode .csv-validation-table th:first-child,
 .csv-dark-mode .csv-validation-table td:first-child,
 .csv-dark-mode .csv-validation-table th:last-child,
-.csv-dark-mode .csv-validation-table td:last-child {
+.csv-dark-mode .csv-validation-table td:last-child,
+html.dark .csv-mapper-overlay .csv-validation-table th:first-child,
+html.dark .csv-mapper-overlay .csv-validation-table td:first-child,
+html.dark .csv-mapper-overlay .csv-validation-table th:last-child,
+html.dark .csv-mapper-overlay .csv-validation-table td:last-child,
+html[data-theme='dark'] .csv-mapper-overlay .csv-validation-table th:first-child,
+html[data-theme='dark'] .csv-mapper-overlay .csv-validation-table td:first-child,
+html[data-theme='dark'] .csv-mapper-overlay .csv-validation-table th:last-child,
+html[data-theme='dark'] .csv-mapper-overlay .csv-validation-table td:last-child {
     background: var(--csv-bg-card);
 }
 
@@ -630,7 +664,11 @@ html, body {
 }
 
 .csv-dark-mode input[type="radio"],
-.csv-dark-mode input[type="checkbox"] {
+.csv-dark-mode input[type="checkbox"],
+html.dark .csv-mapper-overlay input[type="radio"],
+html.dark .csv-mapper-overlay input[type="checkbox"],
+html[data-theme='dark'] .csv-mapper-overlay input[type="radio"],
+html[data-theme='dark'] .csv-mapper-overlay input[type="checkbox"] {
     border-color: rgba(255, 255, 255, 0.2);
     background-color: #374151;
 }

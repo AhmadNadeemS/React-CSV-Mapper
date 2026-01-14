@@ -20,35 +20,52 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
   isDark: propIsDark,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [parentTheme, setParentTheme] = useState<'dark' | 'light' | null>(null);
+  const [parentTheme, setParentTheme] = useState<'dark' | 'light' | null>(() => {
+    if (typeof window === 'undefined') return 'light';
+    const html = document.documentElement;
+    const body = document.body;
+    const checkAttr = (attr: string) => (html.getAttribute(attr) || body.getAttribute(attr))?.toLowerCase();
+    const themeAttr = checkAttr('data-theme');
+    const isDark = themeAttr === 'dark' || html.classList.contains('dark') || body.classList.contains('dark');
+    return isDark ? 'dark' : 'light';
+  });
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && isOpen) {
+    if (typeof window === 'undefined') return;
+
+    const detectTheme = () => {
       const html = document.documentElement;
       const body = document.body;
 
       const checkAttr = (attr: string) => (html.getAttribute(attr) || body.getAttribute(attr))?.toLowerCase();
-      const themeAttr = checkAttr('data-theme') || checkAttr('theme');
+      const themeAttr = checkAttr('data-theme');
+      const isDark = themeAttr === 'dark' || html.classList.contains('dark') || body.classList.contains('dark');
 
-      const darkMarkers = ['dark', 'night', 'black'];
-      const lightMarkers = ['light', 'default', 'white', 'day'];
+      setParentTheme(isDark ? 'dark' : 'light');
+    };
 
-      const hasDarkClass = html.classList.contains('dark') || body.classList.contains('dark');
-      const hasLightClass = html.classList.contains('light') || body.classList.contains('light');
+    // Initial detection
+    detectTheme();
 
-      if ((themeAttr && darkMarkers.includes(themeAttr)) || hasDarkClass) {
-        setParentTheme('dark');
-      } else if ((themeAttr && lightMarkers.includes(themeAttr)) || hasLightClass) {
-        setParentTheme('light');
-      } else {
-        setParentTheme(null);
-      }
-    }
-  }, [isOpen]);
+    // Listen for changes in attributes/classes
+    const observer = new MutationObserver(detectTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleMediaChange = () => detectTheme();
+    mediaQuery.addEventListener('change', handleMediaChange);
+
+    return () => {
+      observer.disconnect();
+      mediaQuery.removeEventListener('change', handleMediaChange);
+    };
+  }, []);
 
   const isDark = propIsDark !== undefined
     ? propIsDark
-    : parentTheme === 'dark'; // Defaults to false (Light) if parent is light or silent
+    : parentTheme === 'dark';
 
   // Determine active columns and available fields
   const { activeColumns, allAvailableFields } = useMemo(() => {
