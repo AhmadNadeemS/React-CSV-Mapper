@@ -171,8 +171,8 @@ html[data-theme='dark'] .csv-mapper-overlay .csv-field-selector-menu::-webkit-sc
     background: var(--csv-bg-card);
     width: 900px;
     max-width: calc(100% - 3rem);
-    height: calc(100vh - 3rem);
-    max-height: calc(100vh - 3rem);
+    height: calc(100vh - 10rem);
+    max-height: calc(100vh - 10rem);
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -419,6 +419,18 @@ html[data-theme='dark'] .csv-mapper-overlay .csv-paste-data-link:hover {
     color: var(--csv-primary) !important;
 }
 
+/* Ensure sticky index/remove headers also get the blue background in validation step */
+.csv-validation-table thead th.csv-row-index,
+.csv-validation-table thead th.csv-remove-row {
+    background: var(--csv-primary-light-solid) !important;
+    z-index: 300 !important;
+}
+
+.csv-dark-mode .csv-validation-table thead th.csv-row-index,
+.csv-dark-mode .csv-validation-table thead th.csv-remove-row {
+    background: var(--csv-bg-header) !important;
+}
+
 
 .csv-row-select {
     width: 48px;
@@ -446,13 +458,19 @@ html[data-theme='dark'] .csv-mapper-overlay .csv-paste-data-link:hover {
     max-width: 60px;
     padding: 0 !important;
     position: sticky;
-    left: 48px;
+    left: 0;
     z-index: 250;
     background: var(--csv-bg-card) !important;
     border-right: 1px solid var(--csv-border-strong); /* Fixed thin line */
     color: var(--csv-text-secondary);
     font-variant-numeric: tabular-nums;
     font-weight: 500;
+}
+
+.csv-row-select + .csv-row-index,
+th.csv-row-select + th.csv-row-index,
+td.csv-row-select + td.csv-row-index {
+    left: 48px;
 }
 
 
@@ -714,11 +732,16 @@ html[data-theme='dark'] .csv-mapper-overlay input[type="checkbox"] {
 
 .csv-cell-content {
     cursor: text;
-    min-width: 140px;
+    min-width: 160px;
+    max-width: 500px;
     outline: none;
     padding: 4px 8px;
     border-radius: 4px;
-    word-break: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Truncate after 3 lines if very long */
+    -webkit-box-orient: vertical;
 }
 
 .csv-error-tooltip {

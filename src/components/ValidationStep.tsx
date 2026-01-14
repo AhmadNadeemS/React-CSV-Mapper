@@ -164,11 +164,11 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
         <table className="csv-table csv-validation-table">
           <thead>
             <tr>
-              <th>#</th>
+              <th className="csv-row-index">#</th>
               {templateFields.map((f) => (
                 <th key={f.key}>{f.label}</th>
               ))}
-              <th>Remove</th>
+              <th className="csv-remove-row">Remove</th>
             </tr>
           </thead>
           <tbody>
@@ -177,7 +177,7 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
               const displayIndex = startIndex + i;
               return (
                 <tr key={row.originalIndex}>
-                  <td>{displayIndex + 1}</td>
+                  <td className="csv-row-index">{displayIndex + 1}</td>
                   {templateFields.map((f) => {
                     const value = row.transformed[f.key] || '';
                     const error = row.errors[f.key];
