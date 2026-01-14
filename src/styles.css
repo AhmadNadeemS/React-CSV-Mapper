@@ -171,8 +171,8 @@ html[data-theme='dark'] .csv-mapper-overlay .csv-field-selector-menu::-webkit-sc
     background: var(--csv-bg-card);
     width: 900px;
     max-width: calc(100% - 3rem);
-    height: calc(100vh - 10rem);
-    max-height: calc(100vh - 10rem);
+    height: calc(100vh - 3rem);
+    max-height: calc(100vh - 3rem);
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -384,7 +384,8 @@ html[data-theme='dark'] .csv-mapper-overlay .csv-paste-data-link:hover {
 }
 
 .csv-table th, .csv-table td {
-    padding: 14px 20px;
+    padding: 0 20px; /* Use height to control vertical space */
+    height: 45.5px;
     border-bottom: 1px solid var(--csv-border);
     border-right: 1px solid var(--csv-border); /* Add vertical lines */
     text-align: left;
@@ -397,6 +398,9 @@ html[data-theme='dark'] .csv-mapper-overlay .csv-paste-data-link:hover {
     font-weight: 700;
     color: var(--csv-text-primary);
     font-size: 11px;
+    padding: 0 20px; /* No vertical padding to control height */
+    height: 45.5px; /* Precise height for headers */
+    max-height: 500px; /* Allow content to push if really needed, but keep it tight */
     text-transform: uppercase;
     letter-spacing: 0.05em;
     border-bottom: 1px solid var(--csv-border);
@@ -411,7 +415,7 @@ html[data-theme='dark'] .csv-mapper-overlay .csv-paste-data-link:hover {
 .csv-validation-table thead th {
     background: var(--csv-primary-light-solid) !important;
     color: var(--csv-primary) !important;
-    border-bottom: 1px solid var(--csv-border-strong);
+    border-bottom: 1px solid var(--csv-border);
 }
 
 .csv-dark-mode .csv-validation-table thead th {
@@ -448,7 +452,7 @@ html[data-theme='dark'] .csv-mapper-overlay .csv-paste-data-link:hover {
     align-items: center;
     justify-content: center;
     height: 100%;
-    min-height: 48px;
+    min-height: 45.5px; /* Matched to row height */
     background: inherit;
 }
 
@@ -461,10 +465,25 @@ html[data-theme='dark'] .csv-mapper-overlay .csv-paste-data-link:hover {
     left: 0;
     z-index: 250;
     background: var(--csv-bg-card) !important;
-    border-right: 1px solid var(--csv-border-strong); /* Fixed thin line */
-    color: var(--csv-text-secondary);
+    border-right: 1px solid var(--csv-border); /* Matched to selection step */
+    color: var(--csv-text-primary); /* Darker for better visibility */
     font-variant-numeric: tabular-nums;
     font-weight: 500;
+    font-size: 14px; /* Increased from 11px */
+    text-align: center !important;
+    padding: 0 !important;
+}
+
+.csv-row-index::after {
+    content: attr(data-index);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    min-height: 45.5px;
+    text-align: center;
+    background: inherit;
 }
 
 .csv-row-select + .csv-row-index,
@@ -474,16 +493,7 @@ td.csv-row-select + td.csv-row-index {
 }
 
 
-.csv-row-index::after {
-    content: attr(data-index);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    min-height: 48px;
-    text-align: center;
-    background: inherit;
-}
+
 
 /* Ensure data cells slide UNDER sticky columns */
 .csv-table td {
@@ -509,10 +519,10 @@ td.csv-row-select + td.csv-row-index {
     left: 0;
     z-index: 50; /* Topmost priority */
     background: var(--csv-bg-card) !important;
-    width: 48px;
-    min-width: 48px;
+    width: 60px; /* Matched to .csv-row-index */
+    min-width: 60px;
     text-align: center;
-    border-right: 1px solid var(--csv-border-strong);
+    border-right: 1px solid var(--csv-border);
 }
 
 .csv-validation-table th:last-child,
@@ -521,7 +531,7 @@ td.csv-row-select + td.csv-row-index {
     right: 0;
     z-index: 40;
     background: var(--csv-bg-card);
-    border-left: 1px solid var(--csv-border-strong);
+    border-left: 1px solid var(--csv-border);
 }
 
 .csv-dark-mode .csv-validation-table th:first-child,
@@ -732,16 +742,10 @@ html[data-theme='dark'] .csv-mapper-overlay input[type="checkbox"] {
 
 .csv-cell-content {
     cursor: text;
-    min-width: 160px;
-    max-width: 500px;
+    white-space: nowrap;
     outline: none;
     padding: 4px 8px;
     border-radius: 4px;
-    word-break: break-all;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* Truncate after 3 lines if very long */
-    -webkit-box-orient: vertical;
 }
 
 .csv-error-tooltip {
@@ -1052,7 +1056,7 @@ input[type=number] {
 
 /* Validation Step Styles */
 .csv-validation-header {
-    margin-bottom: 24px;
+    margin-bottom: 16px; /* Reduced from 24px */
     display: flex;
     justify-content: space-between;
     align-items: center;

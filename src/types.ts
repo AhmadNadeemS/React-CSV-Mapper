@@ -48,6 +48,8 @@ export interface CsvMapperProps extends CsvMapperOptions {
   theme?: ThemeColor | string;
   /** Enable dark mode */
   isDark?: boolean;
+  /** Default rows per page for tables (defaults to 10) */
+  defaultRowsPerPage?: number;
 }
 
 /**

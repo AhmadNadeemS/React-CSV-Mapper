@@ -4,15 +4,16 @@ interface HeaderSelectionStepProps {
   data: string[][];
   selectedRowIndex: number;
   onRowSelected: (index: number) => void;
+  rowsPerPage: number;
 }
 
 export const HeaderSelectionStep: React.FC<HeaderSelectionStepProps> = ({
   data,
   selectedRowIndex,
   onRowSelected,
+  rowsPerPage,
 }) => {
   const [currentPage, setCurrentPage] = React.useState(1);
-  const rowsPerPage = 10;
   const totalPages = Math.ceil(data.length / rowsPerPage);
 
   const startIndex = (currentPage - 1) * rowsPerPage;

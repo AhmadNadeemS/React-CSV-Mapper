@@ -76,6 +76,7 @@ export default function App() {
             onSubmit={handleSubmit}
             isDark={isDark}
             theme={isDark ? 'indigo' : 'blue'}
+            defaultRowsPerPage={10}
             trigger={
               <button
                 style={{

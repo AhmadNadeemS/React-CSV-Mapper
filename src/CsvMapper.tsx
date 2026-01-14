@@ -18,6 +18,7 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
   container = 'body',
   theme,
   isDark: propIsDark,
+  defaultRowsPerPage = 10,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [parentTheme, setParentTheme] = useState<'dark' | 'light' | null>(() => {
@@ -327,6 +328,7 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
             data={rawRows}
             selectedRowIndex={headerRowIndex}
             onRowSelected={setHeaderRowIndex}
+            rowsPerPage={defaultRowsPerPage}
           />
         );
       case 3:
@@ -349,6 +351,7 @@ export const CsvMapper: React.FC<CsvMapperProps> = ({
             onRemoveRow={handleRemoveRow}
             onExportJson={handleExportJson}
             onExportCsv={handleExportCsv}
+            defaultRowsPerPage={defaultRowsPerPage}
           />
         );
       default:

@@ -9,6 +9,7 @@ interface ValidationStepProps {
   onRemoveRow: (index: number) => void;
   onExportJson: () => void;
   onExportCsv: () => void;
+  defaultRowsPerPage: number;
 }
 
 interface PageInputProps {
@@ -66,12 +67,13 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
   onRemoveRow,
   onExportJson,
   onExportCsv,
+  defaultRowsPerPage,
 }) => {
   const [editingCell, setEditingCell] = useState<{ rowIndex: number; fieldKey: string } | null>(
     null
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
   const [showErrorsOnly, setShowErrorsOnly] = useState(false);
 
   // Calculate stats and filtered results
@@ -164,7 +166,7 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
         <table className="csv-table csv-validation-table">
           <thead>
             <tr>
-              <th className="csv-row-index">#</th>
+              <th className="csv-row-index" data-index="#"></th>
               {templateFields.map((f) => (
                 <th key={f.key}>{f.label}</th>
               ))}
@@ -177,7 +179,7 @@ export const ValidationStep: React.FC<ValidationStepProps> = ({
               const displayIndex = startIndex + i;
               return (
                 <tr key={row.originalIndex}>
-                  <td className="csv-row-index">{displayIndex + 1}</td>
+                  <td className="csv-row-index" data-index={displayIndex + 1}></td>
                   {templateFields.map((f) => {
                     const value = row.transformed[f.key] || '';
                     const error = row.errors[f.key];
